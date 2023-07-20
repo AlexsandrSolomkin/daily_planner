@@ -54,5 +54,53 @@ def check_new_data(num):
         if num in "заголовок тело заметки":
             if answer.isalpha():
                 break
-        
     return answer
+
+
+def del_entry(data_del):
+    global all_data
+
+    id_cand = find_entry(data_del, all_data)
+    if id_cand:
+        id_del = input(f"Введите id: ")
+
+        if id_del in id_cand:
+            all_data = [k for k in all_data if k["id"] != id_del]
+            with open(name_db, "w", encoding="utf-8", newline="") as file:
+                fieldnames = ["id", "заголовок", "тело заметки", "дата последней редакции"]
+                writer = csv.DictWriter(file, fieldnames=fieldnames)
+                writer.writeheader()
+                writer.writerows(all_data)
+                print("Данные удалены\n")
+        else:
+            print("Id не найден.\n")
+
+
+def find_entry(data_find, all_info):
+    candidates = [" ".join(i.values()) for i in all_info if data_find in i.values()]
+    if candidates:
+        print(*candidates, sep="\n", end="\n\n")
+        return [n[0] for n in candidates]
+    else:
+        print("Данные не были найдены\n")
+        return 0
+
+def edit_entry(data_change, time, id_change):
+    global all_data
+    key, value = data_change
+
+    if find_entry(id_change, all_data):
+        for i, v in enumerate(all_data):
+            if v["id"] == id_change:
+                v[key] = value
+                v["дата последней редакции"] = time
+                all_data[i] = v
+                
+        with open(name_db, "w", encoding="utf-8", newline="") as file:
+            fieldnames = ["id", "заголовок", "тело заметки", "дата последней редакции"]
+            writer = csv.DictWriter(file, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(all_data)
+            print("Данные отредактированы\n")
+    else:
+        print("Данные не были найдены.\n")

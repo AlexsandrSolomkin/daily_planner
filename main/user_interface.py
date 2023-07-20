@@ -15,6 +15,16 @@ def menu():
                 print_all()
             case "3":
                 add_entry(add_menu())
+            case "4":
+                print_all()
+                id_change = input(f"Enter the id: ")
+
+                if find_entry(id_change, read_all()) and (answer := edit_menu()):
+
+                    date = datetime.datetime.now()
+                    date = date.strftime("%d-%m-%Y %H:%M")
+
+                    edit_entry(answer, date, id_change)
 
 
 def add_menu():
@@ -25,3 +35,21 @@ def add_menu():
     date = datetime.datetime.now()
     add_dict[i] = date.strftime("%d-%m-%Y %H:%M")
     return add_dict
+
+
+def edit_menu():
+    add_dict = {"1": "заголовок", "2": "тело заметки", "3": "дата последней редакции"}
+    while True:
+        print("\nРедактировать:")
+        change = input("1. заголовок\n"
+                       "2. тело заметки\n"
+                       "4. выход\n")
+
+        match change:
+            case "1" | "2":
+                type_date = add_dict[change]
+                return type_date, check_new_data(type_date)
+            case "4":
+                return 0
+            case _:
+                print("Данные не распознаны, повторите ввод.")
