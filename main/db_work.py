@@ -19,7 +19,7 @@ def read_all():
             return all_data
     else:
         print("База данных не подключена!")
-
+        
 
 def print_all():
     for_output = [" ".join(k.values()) for k in all_data]
@@ -54,15 +54,19 @@ def check_new_data(num):
         if num in "заголовок тело заметки":
             if answer.isalpha():
                 break
+        
+        answer = input(f"Данные неверны!\n"
+                       f"Используйте только буквы"
+                       f" из алфавита.\n"
+                       f"Введите {num}: ")
     return answer
 
 
-def del_entry(data_del):
+def del_entry(id_del):
     global all_data
 
-    id_cand = find_entry(data_del, all_data)
+    id_cand = find_entry(id_del, all_data)
     if id_cand:
-        id_del = input(f"Введите id: ")
 
         if id_del in id_cand:
             all_data = [k for k in all_data if k["id"] != id_del]
@@ -96,6 +100,7 @@ def edit_entry(data_change, time, id_change):
                 v["дата последней редакции"] = time
                 all_data[i] = v
                 
+
         with open(name_db, "w", encoding="utf-8", newline="") as file:
             fieldnames = ["id", "заголовок", "тело заметки", "дата последней редакции"]
             writer = csv.DictWriter(file, fieldnames=fieldnames)

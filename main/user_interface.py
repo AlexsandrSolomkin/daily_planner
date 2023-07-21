@@ -6,18 +6,18 @@ def menu():
         read_all()
         print(f"{'*' * 20}\n\nПриложение заметки\n\n{'*' * 20}")
         actions = input("1. Показать все заметки\n"
-                        "3. Добавить заметку\n"
-                        "4. Редактировать заметку\n"
-                        "5. Удалить заметку\n"
-                        "7. Выйти\n")
+                        "2. Добавить заметку\n"
+                        "3. Редактировать заметку\n"
+                        "4. Удалить заметку\n"
+                        "5. Выйти\n")
         match actions:
             case "1":
                 print_all()
-            case "3":
+            case "2":
                 add_entry(add_menu())
-            case "4":
+            case "3":
                 print_all()
-                id_change = input(f"Enter the id: ")
+                id_change = input(f"Введите id: ")
 
                 if find_entry(id_change, read_all()) and (answer := edit_menu()):
 
@@ -25,6 +25,15 @@ def menu():
                     date = date.strftime("%d-%m-%Y %H:%M")
 
                     edit_entry(answer, date, id_change)
+
+            case "4":
+                id_d = input(f"Введите id: ")
+                del_entry(id_d)
+            case "5":
+                print("Пока! Увидимся дорогой пользователь! ;)")
+                break
+            case _:
+                print("Данные не распознаны, повторите ввод.")
 
 
 def add_menu():
@@ -53,3 +62,4 @@ def edit_menu():
                 return 0
             case _:
                 print("Данные не распознаны, повторите ввод.")
+
